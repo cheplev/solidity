@@ -33,8 +33,20 @@ contract Tree {
             count / 2;
         }
     }
+ 
+    function verify(string memory transacion, uint index, bytes32 root, bytes32[] memory proof ) public pure returns(bool) {
+        bytes32 hash = makeHash(transacion);
+        for (uint i = 0; i < proof.length; i++) {
+            bytes32 element = proof[i];
+            if(index % 2 == 0) {
+                hash = keccak256(abi.encodePacked(hash, element));
+            } else {
+                hash = keccak256(abi.encodePacked(element, hash));
+            }
+        }
+    }
 
-    function encode(string memory input)  public pur e returns(bytes memory) {
+    function encode(string memory input)  public pure returns(bytes memory) {
         return abi.encodePacked(input);
     }
 
